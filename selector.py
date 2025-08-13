@@ -62,7 +62,7 @@ News_Editor = AssistantAgent(
     system_message="You are a helpful AI assistant which checks grammer, readability, clarity and ensures neutrality and fairness and provides feedback. You do not write the article",
 )
 
-# Story Moral Agent.
+# Headline generator Agent.
 Headline_Generator = AssistantAgent(
     "Headline_Generator",
     model_client=az_model_client,
@@ -89,3 +89,4 @@ async def main():
 if __name__ == "__main__":
 
     asyncio.run(main())
+
