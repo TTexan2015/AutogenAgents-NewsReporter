@@ -37,7 +37,7 @@ planning_agent = AssistantAgent(
     Your team members are:
         News_Reporter: Writes news article.
         News_Editor: Checks and Provides constructive feedback. It doesn't write the article, only provide feedback and improvements.
-        Headline_Generator: Finally, adds the moral to the story.
+        Headline_Generator: Finally, adds the engaging headlines to the news article.
 
     You only plan and delegate tasks - you do not execute them yourself. You can engage team members multiple times so that a perfect story is provided.
 
@@ -87,4 +87,5 @@ async def main():
 
 # Run the asynchronous function
 if __name__ == "__main__":
+
     asyncio.run(main())
