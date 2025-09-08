@@ -14,37 +14,60 @@ load_dotenv()
 # # Create the token provider
 token_provider = get_bearer_token_provider(DefaultAzureCredential(), "https://cognitiveservices.azure.com/.default")
 
-API_KEY = os.getenv("api_key")
 Model_Name = os.getenv("model-name")
 Api_Version = os.getenv("api-version")
 Azure_Endpoint = os.getenv("azure_endpoint")
+
+model_info = {
+    "id": Model_Name,
+    "object": "model",
+    "created": 0,
+    "owned_by": "azure-openai",
+    "root": Model_Name,
+    "parent": None,
+    "permission": [],
+    "model_type": "chat",
+    "vision": False,
+    "function_calling": False,
+    "json_output": False,
+    "structured_output": False,
+    "family": "gpt-4o",
+}
 
 az_model_client = AzureOpenAIChatCompletionClient(
     azure_deployment=Model_Name,
     model=Model_Name,
     api_version=Api_Version,
     azure_endpoint=Azure_Endpoint,
-    api_key=API_KEY
+    azure_ad_token_provider=token_provider,
+    model_info=model_info,
 )
 
 planning_agent = AssistantAgent(
     "PlanningAgent",
-    description="An agent for planning tasks, this agent should be the first to engage when given a new task.",
+    description=(
+        "An agent for planning tasks; this agent should be the first to engage"
+        " when given a new task."
+    ),
     model_client=az_model_client,
     system_message="""
     You are a planning agent.
     Your job is to break down complex tasks into smaller, manageable subtasks.
     Your team members are:
         News_Reporter: Writes news article.
-        News_Editor: Checks and Provides constructive feedback. It doesn't write the article, only provide feedback and improvements.
-        Headline_Generator: Finally, adds the engaging headlines to the news article.
+    News_Editor: Checks and provides constructive feedback. It doesn't write
+    the article; it only provides feedback.
+    Headline_Generator: Finally, adds the engaging headlines to the news
+    article.
 
-    You only plan and delegate tasks - you do not execute them yourself. You can engage team members multiple times so that a perfect story is provided.
+    You only plan and delegate tasks - you do not execute them yourself. You
+    can engage team members multiple times.
 
     When assigning tasks, use this format:
     1. <agent> : <task>
 
-    After all tasks are complete, summarize the findings and end with "TERMINATE".
+    After all tasks are complete, summarize the findings and end with
+    "TERMINATE".
     """,
 )
 
@@ -52,14 +75,22 @@ planning_agent = AssistantAgent(
 News_Reporter = AssistantAgent(
     "News_Reporter",
     model_client=az_model_client,
-    system_message="You are a helpful AI assistant which write news article based on given facts. Keep the article short",
+    system_message=(
+        "You are a helpful AI assistant which writes news articles based on "
+        "given facts."
+        " Keep the article short."
+    ),
 )
 
 # Create the Editor agent.
 News_Editor = AssistantAgent(
     "News_Editor",
     model_client=az_model_client,
-    system_message="You are a helpful AI assistant which checks grammer, readability, clarity and ensures neutrality and fairness and provides feedback. You do not write the article",
+    system_message=(
+    "You are a helpful AI assistant which checks grammar, readability, "
+    "clarity, ensures neutrality and fairness, and provides feedback. "
+    "You do not write the article."
+    ),
 )
 
 # Headline generator Agent.
@@ -80,9 +111,16 @@ team = SelectorGroupChat(
 )
 
 # Define the main asynchronous function
+
+
 async def main():
     await Console(
-        team.run_stream(task="Is remote work the future, or are we losing workplace culture?")
+        team.run_stream(
+            task=(
+                "Is remote work the future, or are we losing workplace"
+                " culture?"
+            )
+        )
     )  # Stream the messages to the console.
 
 # Run the asynchronous function
