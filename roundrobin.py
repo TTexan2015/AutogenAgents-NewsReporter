@@ -7,7 +7,6 @@ from autogen_agentchat.ui import Console
 from autogen_ext.models.openai import AzureOpenAIChatCompletionClient
 from autogen_core import CancellationToken
 from azure.identity import DefaultAzureCredential, get_bearer_token_provider
-import asyncio
 from dotenv import load_dotenv
 import os
 
@@ -16,7 +15,6 @@ load_dotenv()
 # # Create the token provider
 token_provider = get_bearer_token_provider(DefaultAzureCredential(), "https://cognitiveservices.azure.com/.default")
 
-API_KEY = os.getenv("api_key")
 Model_Name = os.getenv("model-name")
 Api_Version = os.getenv("api-version")
 Azure_Endpoint = os.getenv("azure_endpoint")
@@ -34,7 +32,7 @@ model_info = {
     "function_calling": False,
     "json_output": False,
     "structured_output": False,
-    "family": "gpt-5",
+    "family": "gpt-4o",
 }
 
 az_model_client = AzureOpenAIChatCompletionClient(

@@ -105,18 +105,19 @@ The project implements two distinct agent collaboration patterns:
 
 ### Environment Variables (.env)
 ```bash
-api_key=<Azure_OpenAI_API_Key>
-model-name=<Azure_Deployment_Name>
-api-version=<API_Version>
-azure_endpoint=<Azure_OpenAI_Endpoint>
+model-name="gpt-4o"
+api-version="2024-12-01-preview"
+azure_endpoint="https://ai-icmhub008703513730.openai.azure.com/"
 ```
+
+**Note**: This project uses Azure Active Directory authentication via `DefaultAzureCredential`, so no API key is required in the environment file.
 
 ### Model Configuration
 Both implementations use identical model configuration:
-- **Model Family**: GPT-5
-- **Azure Deployment**: Environment-specified model name
-- **Authentication**: Azure AD token provider
-- **API Version**: Configurable via environment variables
+- **Model Family**: GPT-4o
+- **Azure Deployment**: Environment-specified model name (gpt-4o)
+- **Authentication**: Azure AD token provider (no API key required)
+- **API Version**: 2024-12-01-preview
 
 ## Usage Examples
 

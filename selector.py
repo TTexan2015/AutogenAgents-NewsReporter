@@ -31,7 +31,7 @@ model_info = {
     "function_calling": False,
     "json_output": False,
     "structured_output": False,
-    "family": "gpt-5",
+    "family": "gpt-4o",
 }
 
 az_model_client = AzureOpenAIChatCompletionClient(
